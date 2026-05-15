@@ -1,6 +1,7 @@
 # rustino-sstable
 
 A lightweight SSTable-style Rust project using Apache Arrow and Parquet, with a simple Iceberg-style metadata export path.
+appends create sorted L0 Parquet segments, scans use the manifest plus key-range metadata to skip irrelevant files, and compaction merges all L0 files into one globally sorted L1 segment while exporting lightweight Iceberg-style metadata alongside the table.
 
 ## Step-by-step tutorial
 
