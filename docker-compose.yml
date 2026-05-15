@@ -1,0 +1,19 @@
+services:
+  spark:
+    image: apache/spark:3.4.1
+    container_name: rustino-iceberg-spark
+    user: root
+    tty: true
+    stdin_open: true
+    working_dir: /data
+    environment:
+      - SPARK_HOME=/opt/spark
+      - HOME=/opt/spark/work-dir
+    volumes:
+      - ./:/workspace
+      - ./tutorial-demo:/data
+      - spark-ivy:/opt/spark/work-dir/.ivy2
+    command: ["bash", "-lc", "mkdir -p /opt/spark/work-dir/.ivy2/cache && chmod -R 777 /opt/spark/work-dir/.ivy2 && /opt/spark/bin/pyspark --packages org.apache.iceberg:iceberg-spark-runtime-3.4_2.12:1.10.1 --conf spark.sql.extensions=org.apache.iceberg.spark.extensions.IcebergSparkSessionExtensions --conf spark.sql.catalog.local=org.apache.iceberg.spark.SparkCatalog --conf spark.sql.catalog.local.type=hadoop --conf spark.sql.catalog.local.warehouse=/data"]
+
+volumes:
+  spark-ivy:
